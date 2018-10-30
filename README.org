@@ -1,10 +1,10 @@
-* MOCKITO *
-** What is Mockito **
+* MOCKITO 
+** What is Mockito? 
 Mockito is an open source testing framework for Java that allows the creation of test double
 objects in automated unit tests for the purpose of test-driven development or behavior-driven
 development.
 
-** What is *Test Double* **
+** What is Test Double? 
 *Test Double* is generic term used by *Gerard Meszaros* to mean any case where you replace a
 production object for testing purposes.
 
@@ -24,7 +24,7 @@ production object for testing purposes.
   they are expected to receive. They can throw an exception if they receive a call they don't 
   expect and are checked during verification to ensure they got all the calls they were expecting
 
-** Why Mock? **
+** Why Mock? 
 Most of the time the code we write have dependencies. Often, delegates some work to other methods
 in other classes. If we are to use on *Unit* testing, our test has to depend on those methods, but
 we want the tests to be independent of all other dependencies.
@@ -46,7 +46,7 @@ testCompile “org.mockito:mockito−core:1.9.5“
 <dependency org=”org.mockito” name=”mockito-core” rev=”1.9.5” conf=”test->default”/>
 #+END_SRC
 
-** Creating Mock **
+** Creating Mock 
 A mock object can be created with help of Mockito static method *mock()*
 
 #+BEGIN_SRC java
@@ -66,7 +66,7 @@ private EtcBaseService etcBaseService;
 
 #+END_SRC
 
-** HOW TO INJECT MOCKS **
+** HOW TO INJECT MOCKS? 
 Asuming we want to test the service layer of our application services.
 We first inject the service we want to test into the test classes.
 
@@ -85,7 +85,7 @@ method is called, which will execute the below line whenever a test is run.
  }
 #+END_SRC
 
-*** Stubbing Method's Return Value ***
+*** Stubbing Method's Return Value
 The ability to return a given value when a method is called is called *Studbbing*.
 With Mockito you can specify how and what a method should return when it's called
 using *Mockito.when()* with *thenReturn()*
@@ -109,7 +109,7 @@ test should be splited into three parts (blocks) each with a specify responsibil
 
 Given then above behavior driven development Mockito also has BDDMockito class that introduces BDD semantics.
 
-** MOCKING METHODS WITH MOCKITO **
+** MOCKING METHODS WITH MOCKITO 
 After creating and injecting your mock, you should then tell Mockito how to behave when certain method are invoked.
 #+BEGIN_SRC 
  Mockito.when(instanceName.methodName(methodArguments)).thenReturn(true);  // return true when the instance method is called.
@@ -140,14 +140,14 @@ when it's called.
  @Test(expected = ExceptionName.class)
 #+END_SRC
 
-** MOCKING VOID METHODS WITH MOCKITO **
+** MOCKING VOID METHODS WITH MOCKITO 
 Even though void methods doesn't return a value, behinde the scene it do return something
 depending on the programming language and implementation.
 
 With Mockito we can use *doAnswer()*  to mock a void method, *doThrow()* to throw an exception 
 from a void method.
 
-** USING VERIFY WITH MOCKITO **
+** USING VERIFY WITH MOCKITO 
 Apart from asserting that the return values are valid, we can also verify that a given method is called
 on a given mock object during test execution, most especially when the method under test is a *Void* method.
 
@@ -168,14 +168,14 @@ on a given mock object during test execution, most especially when the method un
 The argument captor allows you to capture any argument that is passed into a mock method.
 *Mockito.ArgumentCaptor*
 
-** MOCKITO SPY **
+** MOCKITO SPY 
 It's not alway that we want to mock everything, sometimes we do want to interact with the
 real service and verify that it was invoked, that is where Mockito spy is at your back.
 
 When a dependency is annotated with *@Spy* Mockito will create a wrapper around the a real instance of
 that object so that it can be called.
 
-* ANY QUESTION? *
+* ANY QUESTION? 
 If you have any question you can send it through my email address.
 *bellomodigimba@gmail.com*
 
