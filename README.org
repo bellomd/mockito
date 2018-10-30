@@ -1,0 +1,181 @@
+* MOCKITO *
+** What is Mockito **
+Mockito is an open source testing framework for Java that allows the creation of test double
+objects in automated unit tests for the purpose of test-driven development or behavior-driven
+development.
+
+** What is *Test Double* **
+*Test Double* is generic term used by *Gerard Meszaros* to mean any case where you replace a
+production object for testing purposes.
+
++ *Dummy* objects are passed around but never actually used. Usually they are just used to 
+  fill parameter lists.
+
++ *Fake* objects actually have working implementations, but usually take some shortcut which 
+  makes them not suitable for production (an InMemoryTestDatabase is a good example). 
+
++ *Stubs* provide canned answers to calls made during the test, usually not responding 
+  at all to anything outside what's programmed in for the test.
+
++ *Spies* are stubs that also record some information based on how they were called. One 
+  form of this might be an email service that records how many messages it was sent.
+
++ *Mocks* are pre-programmed with expectations which form a specification of the calls 
+  they are expected to receive. They can throw an exception if they receive a call they don't 
+  expect and are checked during verification to ensure they got all the calls they were expecting
+
+** Why Mock? **
+Most of the time the code we write have dependencies. Often, delegates some work to other methods
+in other classes. If we are to use on *Unit* testing, our test has to depend on those methods, but
+we want the tests to be independent of all other dependencies.
+
+#+BEGIN_SRC 
+// Maven Dependency
+
+<dependency>
+	<groupId>org.mockito</groupId>
+	<artifactId>mockito-all</artifactId>
+	<version>1.9.5</version>
+	<scope>test</scope>
+</dependency>
+
+// Gradle Dependency
+testCompile “org.mockito:mockito−core:1.9.5“
+
+// Ivy Dependency
+<dependency org=”org.mockito” name=”mockito-core” rev=”1.9.5” conf=”test->default”/>
+#+END_SRC
+
+** Creating Mock **
+A mock object can be created with help of Mockito static method *mock()*
+
+#+BEGIN_SRC java
+ 
+EtcBaseService etcBaseService = Mockito.mock(EtcBaseService.class);
+
+/** 
+  There are annotation alternatives that can be used to create the same thing. 
+ */
+
+@Mock
+private EtcBaseService etcBaseService;
+
+/**
+  To use annotation, you must call *MockitoAnnotations.initMocks(TestClass)* or use *MockitoJUnit4Runner* as JUnit runner.
+ */
+
+#+END_SRC
+
+** HOW TO INJECT MOCKS **
+Asuming we want to test the service layer of our application services.
+We first inject the service we want to test into the test classes.
+
++ *@Mock* will create a new mock implementation for the given *EtcBaseDao*
++ *@InjectMocks* will inject the created mock to *etcBaseService* instance.
+
+The creation and insertion of the mock dependencies are done when *setUp()*
+method is called, which will execute the below line whenever a test is run.
+
+#+BEGIN_SRC java
+ // The method is called before the execution of every test in the test class.
+
+ @Before
+ public void setUp() throws Exception {
+  MockitoAnnotations.initMocks(this); // This line create an instance and insert all the mock dependencies.
+ }
+#+END_SRC
+
+*** Stubbing Method's Return Value ***
+The ability to return a given value when a method is called is called *Studbbing*.
+With Mockito you can specify how and what a method should return when it's called
+using *Mockito.when()* with *thenReturn()*
+
+Mockito heavely use static methods such as shown below.
+
+| METHOD                                           | DESCRIPTION                                          |
+|--------------------------------------------------+------------------------------------------------------|
+| thenThrow(Throwable toBeThrown)                  | Throws given exception                               |
+| thenThrow(Class<? extends Throwable> toBeThrown) |                                                      |
+|--------------------------------------------------+------------------------------------------------------|
+| then(Answer answer)                              | Uses user-created code toanswer                      |
+| thenAnswer(Answer answer)                        |                                                      |
+|--------------------------------------------------+------------------------------------------------------|
+| thenCallRealMethod()                             | Calls real method when working with partial mock/spy |
+|--------------------------------------------------+------------------------------------------------------|
+| thenReturn(returnValue)                          | Return the given value                               |
+
+Following *arrange-act-assert* pattern (similar to *given-when-then*, from *Behavior Driven Development) a
+test should be splited into three parts (blocks) each with a specify responsibility.
+
+Given then above behavior driven development Mockito also has BDDMockito class that introduces BDD semantics.
+
+** MOCKING METHODS WITH MOCKITO **
+After creating and injecting your mock, you should then tell Mockito how to behave when certain method are invoked.
+#+BEGIN_SRC 
+ Mockito.when(instanceName.methodName(methodArguments)).thenReturn(true);  // return true when the instance method is called.
+
+ // Example:
+ Mockito.when(etcBaseService.save(etcBase)).thenReturn(etcBase);
+
+ // We can also use matchers as shown below.
+ Mockito.when(etcBaseService.save(Mockito.any(EtcBase.class))).thenReturn(etcBase);
+
+ // However, if there are more than one parameters in a method we cannot mix matchers and actual objects.
+ // Example:
+ Mockito.when(etcBaseService.getByIdAndDate(branchId, Mockito.any(Date.class))).thenReturn(etcBase); // this will throw exception.
+#+END_SRC
+
+We either have to use matcher for the parameters, or real objects and values.
+
+*** WHEN TO USE thenReturn, doReturn, Answer, doAnswer, assertThat, and assertEquals ***
++ You should use *thenReturn()* or *doReturn()* when you already know the return value at the time you mock the method call.
++ You should use *Answer()* or *doAnswer()* when you need to do additional things when a mocked method is invoked.
++ There is no much difference between must of Hamcrest matchers and junit asserts, only that hamcrest tends to given
+  more information when there is an error with the test method.
+
+*** THROWING EXCEPTION FROM A MOCKED METHOD ***
+When can use the JUnit expected to make sure that a method throw exception
+when it's called.
+#+BEGIN_SRC
+ @Test(expected = ExceptionName.class)
+#+END_SRC
+
+** MOCKING VOID METHODS WITH MOCKITO **
+Even though void methods doesn't return a value, behinde the scene it do return something
+depending on the programming language and implementation.
+
+With Mockito we can use *doAnswer()*  to mock a void method, *doThrow()* to throw an exception 
+from a void method.
+
+** USING VERIFY WITH MOCKITO **
+Apart from asserting that the return values are valid, we can also verify that a given method is called
+on a given mock object during test execution, most especially when the method under test is a *Void* method.
+
+*** There are two types of verify methods ***
++ One that takes the mock object only and
++ The second one that takes mock object and verification mode
+
+*** Verification modes ***
++ Mockito.times(...)
++ Mockito.atLeast(...)
++ Mockito.atMost(...)
++ Mockito.calls(...)
++ Mockito.only(...)
++ Mockito.atLeastOnce()
++ Mockito.never()
+
+*** Using ArgumentCaptor  ***
+The argument captor allows you to capture any argument that is passed into a mock method.
+*Mockito.ArgumentCaptor*
+
+** MOCKITO SPY **
+It's not alway that we want to mock everything, sometimes we do want to interact with the
+real service and verify that it was invoked, that is where Mockito spy is at your back.
+
+When a dependency is annotated with *@Spy* Mockito will create a wrapper around the a real instance of
+that object so that it can be called.
+
+* ANY QUESTION? *
+If you have any question you can send it through my email address.
+*bellomodigimba@gmail.com*
+
