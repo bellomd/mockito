@@ -127,13 +127,13 @@ After creating and injecting your mock, you should then tell Mockito how to beha
 
 We either have to use matcher for the parameters, or real objects and values.
 
-*** WHEN TO USE thenReturn, doReturn, Answer, doAnswer, assertThat, and assertEquals ***
+*** WHEN TO USE thenReturn, doReturn, Answer, doAnswer, assertThat, and assertEquals? 
 + You should use *thenReturn()* or *doReturn()* when you already know the return value at the time you mock the method call.
 + You should use *Answer()* or *doAnswer()* when you need to do additional things when a mocked method is invoked.
 + There is no much difference between must of Hamcrest matchers and junit asserts, only that hamcrest tends to given
   more information when there is an error with the test method.
 
-*** THROWING EXCEPTION FROM A MOCKED METHOD ***
+*** THROWING EXCEPTION FROM A MOCKED METHOD 
 When can use the JUnit expected to make sure that a method throw exception
 when it's called.
 #+BEGIN_SRC
@@ -151,11 +151,11 @@ from a void method.
 Apart from asserting that the return values are valid, we can also verify that a given method is called
 on a given mock object during test execution, most especially when the method under test is a *Void* method.
 
-*** There are two types of verify methods ***
+*** There are two types of verify methods 
 + One that takes the mock object only and
 + The second one that takes mock object and verification mode
 
-*** Verification modes ***
+*** Verification modes 
 + Mockito.times(...)
 + Mockito.atLeast(...)
 + Mockito.atMost(...)
@@ -164,7 +164,7 @@ on a given mock object during test execution, most especially when the method un
 + Mockito.atLeastOnce()
 + Mockito.never()
 
-*** Using ArgumentCaptor  ***
+*** Using ArgumentCaptor  
 The argument captor allows you to capture any argument that is passed into a mock method.
 *Mockito.ArgumentCaptor*
 
