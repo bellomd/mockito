@@ -6,8 +6,6 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -16,9 +14,7 @@ import org.mockito.Spy;
 import com.etcbase.mockito.EtcBase;
 import com.etcbase.mockito.dao.EtcBaseDao;
 
-public class EtcBaseSpyServiceTest {
-
-	// Mocking and Injecting our mocks dependencies.
+public class MockitoSpyServiceTest {
 
 	@Spy
 	private EtcBaseDao etcBaseDao;
@@ -26,20 +22,17 @@ public class EtcBaseSpyServiceTest {
 	@InjectMocks
 	private EtcBaseService etcBaseService;
 
-	@Captor
-	private ArgumentCaptor<EtcBase> etcBaseArgumentCaptor;
-
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 	}
 
 	/**
-	 * 	We want to verify the interact of our service with the real
+	 * 	We want to verify the interaction of our service with the real
 	 * 	EtcBaseDao service.
 	 */
 	@Test
-	public void shouldSaveAndReturnNewBranch() {
+	public void successCreateNewBranch() {
 
 		// Prepare the objects you need.
 		final EtcBase etcBase = new EtcBase();

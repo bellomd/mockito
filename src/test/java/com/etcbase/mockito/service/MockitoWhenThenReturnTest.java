@@ -2,8 +2,6 @@ package com.etcbase.mockito.service;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 
-import java.util.Random;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,7 +14,7 @@ import org.mockito.MockitoAnnotations;
 import com.etcbase.mockito.EtcBase;
 import com.etcbase.mockito.dao.EtcBaseDao;
 
-public class EtcBaseServiceTest {
+public class MockitoWhenThenReturnTest {
 
 	@Mock
 	private EtcBaseDao etcBaseDao;
@@ -34,31 +32,18 @@ public class EtcBaseServiceTest {
 	 * save method.
 	 */
 	@Test
-	public void shouldSaveAndReturnNewBranch() {
+	public void successCreateNewBranch() {
 
 		// Prepare the objects you need.
-		final EtcBase etcBase = new EtcBase(); 
+		final EtcBase etcBase = new EtcBase(); // This can be mocked.
 
 		// when
-		Mockito.when(etcBaseDao.save(Mockito.any())).thenReturn(etcBase); // then
-
-		// Mockito.doReturn(etcBaseService).when(etcBaseService).save(etcBase);
+		Mockito.when(etcBaseDao.save(etcBase)).thenReturn(etcBase); // then
 
 		// We then call our service
 		final EtcBase savedEtcBase = etcBaseService.save(etcBase);
 
 		// Assert
 		Assert.assertThat(savedEtcBase, CoreMatchers.is(notNullValue()));
-	}
-	
-	/**
-	 * 	Throwing exception from a void method
-	 */
-	@Test(expected = RuntimeException.class)
-	public void shouldThrowRuntimExceptionWhenDeleteIsCalled() {
-		
-		Mockito.doThrow(RuntimeException.class).when(etcBaseDao).delete(Mockito.anyLong());
-		
-		etcBaseService.delete(new Random().nextLong());
 	}
 }

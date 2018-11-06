@@ -50,6 +50,15 @@ public class EtcBaseDao {
 		etcBaseBranches.remove(id);
 	}
 	
+	public void delete(final EtcBase etcBase) {
+
+		if (etcBase == null) {
+			throw new RuntimeException("Entity cannot be null");
+		}
+
+		etcBaseBranches.remove(etcBase.getId());
+	}
+	
 	public void checkId(final EtcBase etcBase) {
 		
 		if (etcBase.getId() == null) {

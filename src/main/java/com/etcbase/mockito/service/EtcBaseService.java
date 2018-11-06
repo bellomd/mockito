@@ -4,18 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.etcbase.mockito.EtcBase;
 import com.etcbase.mockito.dao.EtcBaseDao;
 
-@Service
 public class EtcBaseService {
 	
 	private final EtcBaseDao etcBaseDao;
 	
-	@Autowired
 	public EtcBaseService(final EtcBaseDao etcBaseDao) {
 		this.etcBaseDao = etcBaseDao;
 	}
@@ -41,5 +36,9 @@ public class EtcBaseService {
 
 	public void delete(final Long id) {
 		etcBaseDao.delete(id);
+	}
+	
+	public void delete(final EtcBase etcBase) {
+		etcBaseDao.delete(etcBase);
 	}
 }
