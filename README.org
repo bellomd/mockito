@@ -99,8 +99,8 @@ refer to /com.etcbase.mockito.service.MockitoWithAnnotationTest.java/ in the sou
 
 *** Tired of Using *MockitoAnnotations.initMocks(this)*
 Some times litle thing can become boring, if you are tired of using the above
-way of satisfying dependencies you can add *MockitoJUnitRunner or MockitoJUnit4Runner* 
-in your dependencies, it will take care of that. If you are using spring test, then
+way of satisfying dependencies you can add *MockitoJUnitRunner or use MockitoJUnit4Runner* from Spring
+in your test, it will take care of that. If you are using spring test, then
 you already have it. You can use it. Below is example using *MockitoJUnit4Runner*.
 
 #+BEGIN_SRC java
@@ -133,7 +133,7 @@ Mockito heavely uses static methods such as the once shown below.
 
 
 *** Stubbing Method's Return Value
-The ability to return a test double as value when a method is called is called *Studbbing*.
+The ability to return a test double as value when a method is called is called *Stubbing*.
 With Mockito you can specify how and what a method should return when it's called
 e.g. using *Mockito.when()* with *thenReturn()*
 
